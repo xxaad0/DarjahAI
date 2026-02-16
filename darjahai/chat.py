@@ -271,7 +271,7 @@ You are here to move the system forward.
 FREELIMIT=10
 PREMIUMLIMIT=1500
 
-FREETOKENSMAX=250
+FREETOKENSMAX=500
 PREMIUMTOKENSMAX=1200
 
 def checkQuota(user):
@@ -341,6 +341,7 @@ def darjahai(user_id:int,user_text:str,session_id:int| None=None,max_output_toke
         instructions=SYSTEM_PROMPT,
         input=fInput,
         max_output_tokens=max_output_tokens,
+        reasoning={"effort":"minimal"},
         store=False,
         )
     
