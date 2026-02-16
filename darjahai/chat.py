@@ -345,9 +345,18 @@ def darjahai(user_id:int,user_text:str,session_id:int| None=None,max_output_toke
         store=False,
         )
     
-    output= (response.output_text or "").strip()
-
-    return output
+    output = (getattr(response, "output_text", "") or "").strip()
+    if not output:
+        try:
+            parts = []
+            for item in getattr(response, "output", []) or []:
+                for c in getattr(item, "content", []) or []:
+                    if getattr(c, "type", None) in ("output_text", "text"):
+                        parts.append(getattr(c, "text", "") or getattr(c, "value", ""))
+            output = "\n".join([p for p in parts if p]).strip()
+        except Exception:
+            pass
+    return output or "No output returned."
 
 
 def buildMemory(user_id:int)->dict:
