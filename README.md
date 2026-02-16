@@ -62,7 +62,7 @@ It started with sagyoai and now has developed into phase 2.
 
 ---
 
-## Repository layout (high level)
+## Repository layout 
 
 ```
 
