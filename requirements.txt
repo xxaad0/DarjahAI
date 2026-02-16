@@ -19,7 +19,7 @@ python-dotenv==1.0.1
 
 flask-mailman==1.1.1
 
-openai==1.59.9
+openai>=2.0.0
 stripe==11.6.0
 
 pandas==2.2.3
