@@ -323,14 +323,23 @@ html.home-page::-webkit-scrollbar-thumb, body.home-page::-webkit-scrollbar-thumb
   flex-wrap: nowrap;
   width: max-content;
   align-items: center;
-  grid-template-columns: 2.5rem 2.5rem 10ch 10ch 2.5rem 2.5rem;
-}
-
-.taskcalendarbuttongroup{
+  grid-template-columns: 2.5rem 2.5rem 12ch 12ch 2.5rem 2.5rem;
     width: 100%;
     padding:.25rem 0;
     white-space:nowrap;
 }
+.taskcalendarbuttondaysofweek{
+  display: grid !important;                
+  grid-template-columns: repeat(7, 2.5rem) !important;
+  gap: .25rem;
+  width: fit-content;  
+}
+
+.taskcalendarbuttondaysofweek > button{
+  width: 2.5rem;
+  padding: .375rem 0;                    
+}
+
 
 .taskcalendargrid{
   display: grid !important;                
