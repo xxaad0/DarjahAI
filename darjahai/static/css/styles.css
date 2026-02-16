@@ -339,7 +339,7 @@ html.home-page::-webkit-scrollbar-thumb, body.home-page::-webkit-scrollbar-thumb
   flex-wrap: nowrap;
   width: max-content;
   align-items: center;
-  grid-template-columns: 2.5rem 2.5rem 2.5rem 2.5rem 2.5rem 2.5rem;
+  grid-template-columns: 2ch 2ch 2ch 2ch 2ch 2ch 2ch;
 }
 
 .taskcalendargrid{
