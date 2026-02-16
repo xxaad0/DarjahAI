@@ -1,0 +1,925 @@
+
+{% extends 'base.html' %}
+
+    {% block head %} 
+
+    <style>
+      :root{--arrowdown:'\F118'; --arrowup: '\F139'; --arrowupnofill: '\F13A';}
+      
+      th{cursor: pointer;}
+
+      th span::after{font-family:'bootstrap-icons';font-weight: 400; margin-left: .25rem;}
+
+      .desc::after{content: var(--arrowdown);}
+      .asc::after{content: var(--arrowup);}
+      .inactive::after{content: var(--arrowupnofill);}
+
+    </style>
+    
+    {% endblock %}
+    {% block title %}DarjahAI ~ Dashboard{% endblock %}
+
+{% block html_class %}home-page{% endblock %}
+{% block body_class %}home-page{% endblock %}
+{% block body %}
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<nav class="navbar" style="background-color:#e3f2fd;" data-bs-theme="light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/home">DarjahAI</a>
+
+      <div class ="robotbi-initial-section">
+
+    <a href = "/home">
+    <svg xmlns="http://www.w3.org/2000/svg"
+     fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
+  <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
+  <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+</svg>
+</a>
+</div>
+
+
+    <button class="navbar-toggler" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navbarDarjahAI"
+      aria-controls="navbarDarjahAI" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarDarjahAI">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            More
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/tasks">Create Tasks</a></li>
+            <li><a class="dropdown-item" href="/chat">Chat</a></li>
+            <li><a class="dropdown-item" href="/stats">Stats</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/verify">Verify Email</a></li>
+            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+          <a class="nav-link" href="/home">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/">Go Back</a>
+        </li>
+      </ul>
+
+
+    </div>
+  </div>
+</nav>
+<div class="bg-dark bg-gradient" style="min-height: 100vh; padding-top: 1.5rem;">
+
+  <p class="h1 text-primary mx-auto p-2 text-center display-2 shadow-lg mb-5 bg-body-tertiary rounded"
+     style="width: 200px;">
+    Tasks
+  </p>
+
+{% if tasks and tasks|length > 0 %}
+
+<script>
+  
+  let sortOrder= {};
+
+  function sortTable(colI){
+
+    const table = document.getElementById('taskTable');
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.rows);
+
+    sortOrder[colI]=(sortOrder[colI]==='asc')? 'desc':'asc';
+    const hdCells= table.tHead.rows[0].cells;
+
+    for(let i = 0; i< hdCells.length; i++){
+      const arrow = document.getElementById('arrow' +i);
+      if(!arrow) {continue;}
+      arrow.className = (i===colI) ? sortOrder[colI] : 'inactive';
+    }
+
+
+    const getValOfCell=(row,col)=>{
+
+      const cell = row.cells[col];
+      const field = cell.querySelector("input,select,textarea");
+      const txt = (field ? field.value: cell.textContent) || "";
+      return txt.trim();
+
+    };
+
+    rows.sort((a,b)=>{
+
+      const aVal = getValOfCell(a,colI);
+      const bVal = getValOfCell(b,colI);
+
+      if(colI==7 || colI==8){
+        return sortOrder[colI]==='asc'
+        ? new Date(aVal) - new Date(bVal)
+        : new Date(bVal) - new Date(aVal);
+      }
+
+
+      return sortOrder[colI] === 'asc'
+      ? aVal.localeCompare(bVal,undefined,{numeric: true,sensitivity:'base'})
+      : bVal.localeCompare(aVal,undefined,{numeric: true,sensitivity:'base'});
+
+    });
+
+    rows.forEach(row=>tbody.appendChild(row));
+
+  }
+
+</script>
+<div class="task-container mx-4">
+
+  <form method="POST" action="{{ url_for('main.update_tasks') }}">
+    <table class="table table-primary table-hover" id ="taskTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">#ID<span id ="arrow0" class="inactive"></span></th>
+          <th onclick="sortTable(1)">Task Name<span id ="arrow1" class="inactive"></span></th>
+          <th onclick="sortTable(2)">Task Category<span id ="arrow2" class="inactive"></span></th>
+          <th onclick="sortTable(3)">Task Status<span id ="arrow3" class="inactive"></span></th>
+          <th onclick="sortTable(4)">Task Priority<span id ="arrow4" class="inactive"></span></th>
+          <th onclick="sortTable(5)">Task Description<span id ="arrow5" class="inactive"></span></th>
+          <th onclick="sortTable(6)">Task Location<span id ="arrow6" class="inactive"></span></th>
+          <th onclick="sortTable(7)">Task Due Date<span id ="arrow7" class="inactive"></span></th>
+          <th onclick="sortTable(8)">Task Creation Date<span id ="arrow8" class="inactive"></span></th>
+          <th>Delete Task</th>
+          <th onclick="sortTable(9)">Task Reminder<span id ="arrow9" class="inactive"></span></th>
+          <th>SubTasks</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for task in tasks %}
+        <tr>
+          <td>
+          <input type="hidden" name="task_db_id[]" value="{{ task.id }}">
+            <input type="text"
+                   class="form-control"
+                   style="background-color: transparent;"
+                   name="task_id[]"
+                   value="{{ task.task_id }}">
+          </td>
+
+          <td>
+            <input type="text"
+                   class="form-control"
+                   style="background-color: transparent;"
+                   name="task_name[]"
+                   value="{{ task.task_name }}">
+          </td>
+
+          <td>
+            <input type="text"
+                   class="form-control"
+                   style="background-color: transparent;"
+                   name="task_category[]"
+                   value="{{ task.task_category }}">
+          </td>
+
+          <td>
+            <select class="form-control"
+                   style="background-color: transparent;"
+                   name="task_status[]">
+            <option value="Incomplete" {% if task.task_status =="Incomplete" %}selected{% endif %}>Incomplete</option>
+            <option value="In-Progress" {% if task.task_status =="In-Progress" %}selected{% endif %}>In-Progress</option>
+            <option value="Complete" {% if task.task_status =="Complete" %}selected{% endif %}>Complete</option>
+            </select>
+          </td>
+
+          <td>
+            <input type="text"
+                   class="form-control"
+                   style="background-color: transparent;"
+                   name="task_priority[]"
+                   value="{{ task.task_priority }}">
+          </td>
+
+          <td>
+            <textarea class="form-control"
+                      style="background-color: transparent;"
+                      name="task_description[]"
+                      >{{ task.task_description }}</textarea>
+          </td>
+
+          <td>
+            <input type="text"
+                   class="form-control"
+                   style="background-color: transparent;"
+                   name="task_location[]"
+                   value="{{ task.task_location }}">
+          </td>
+
+          <td>
+            <input type="text"
+                   class="form-control task_due_date"
+                   data-taskid="{{ task.id }}"
+                   data-status="{{ task.task_status }}"
+                   data-reminder="{{ task.task_reminder_status }}"
+                   style="background-color: transparent;"
+                   name="task_due_date_entered[]"
+                   value="{{ task.task_due_date_entered }}">
+          </td>
+
+          <td>{{ task.task_date_created.date() }}</td>
+          <td>
+            <button type="submit" class="btn btn-danger"
+              formaction="{{ url_for('main.delete_tasks', task_id=task.id) }}"
+              formmethod="POST">Delete
+            </button>
+          </td>
+          <td>
+            <select class="form-control task_rms"
+                   style="background-color: transparent;"
+                   name="task_reminder_status[]">
+            <option value="ON" {% if task.task_reminder_status =="ON"%}selected{% endif %}>ON</option>
+            <option value="OFF" {% if task.task_reminder_status =="OFF" %}selected{% endif %}>OFF</option>
+          </select>
+          </td>
+
+          <td>
+
+  <button type="button" class="btn btn-outline-secondary"
+          data-bs-toggle="modal" data-bs-target="#subtaskOverlay-{{ task.id }}">
+    SubTasks
+  </button>
+
+<a class="btn btn-outline-danger"
+   href="{{ url_for('main.dashboard', task_id=task.id) }}">
+  View
+</a>
+
+  <div class="modal fade" id="subtaskOverlay-{{ task.id }}"
+       data-bs-backdrop="static" data-bs-keyboard="false"
+       tabindex="-1" aria-labelledby="subtaskOverlayTitle-{{ task.id }}" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-dark" id="subtaskOverlayTitle-{{ task.id }}">SubTasks</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row">
+              <div class="col-3 text-dark ms-4">
+                <label for="SubTaskName-{{ task.id }}" class="form-label fw-semibold">SubTask Name:</label>
+                <input type="text" class="form-control text-bg-outline-secondary"
+                       name="SubTaskName" id="SubTaskName-{{ task.id }}" placeholder="Do Laundry...">
+              </div>
+
+              <div class="col-2 text-dark ms-4">
+                <label for="SubTaskID-{{ task.id }}" class="form-label fw-semibold">SubTask ID:</label>
+                <input type="text" class="form-control text-bg-outline-secondary"
+                       name="SubTaskID" id="SubTaskID-{{ task.id }}" placeholder="#ST-001">
+              </div>
+
+              <div class="col-3 text-dark ms-4">
+                <label for="SubTaskCategory-{{ task.id }}" class="form-label fw-semibold">SubTask Category:</label>
+                <input type="text" class="form-control text-bg-outline-secondary"
+                       name="SubTaskCategory" id="SubTaskCategory-{{ task.id }}" placeholder="Household Chores">
+              </div>
+
+              <div class="col-2 text-dark ms-4 mb-3">
+                <label for="SubTaskStatus-{{ task.id }}" class="form-label fw-semibold">SubTask Status:</label>
+                <select class="form-control text-bg-outline-secondary"
+                        name="SubTaskStatus" id="SubTaskStatus-{{ task.id }}">
+                  <option value="Incomplete" selected>Incomplete</option>
+                  <option value="In-Progress">In-Progress</option>
+                  <option value="Complete">Complete</option>
+                </select>
+              </div>
+
+
+              <div class="col-1 text-dark ms-4">
+                <label for="SubTaskPriority-{{ task.id }}" class="form-label fw-semibold">SubTask Priority:</label>
+                <input type="text" class="form-control text-bg-outline-secondary"
+                       name="SubTaskPriority" id="SubTaskPriority-{{ task.id }}" placeholder="1">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col md-6 text-dark ms-4">
+                <label for="SubTaskDescription-{{ task.id }}" class="form-label fw-semibold mt-3">SubTask Description:</label>
+                <textarea class="form-control text-bg-outline-secondary"
+                          name="SubTaskDescription" id="SubTaskDescription-{{ task.id }}"
+                          placeholder="Put the blue clothes and turn it on..." rows="3"></textarea>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-3 text-dark ms-4 mt-3 mb-3">
+                <label for="SubTaskLocation-{{ task.id }}" class="form-label fw-semibold">SubTask Location:</label>
+                <input type="text" class="form-control text-bg-outline-secondary"
+                       name="SubTaskLocation" id="SubTaskLocation-{{ task.id }}" placeholder="Ontario, Canada...">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col md-6 text-dark ms-4">
+
+                <label class="form-label fw-semibold mt-3">SubTask Due Date:</label>
+
+                <p class="d-inline-flex gap-1">
+                  <button class="btn btn-outline-danger ms-3" type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#SubTaskCalendarCollapse-{{ task.id }}"
+                          role="button" aria-expanded="false"
+                          aria-controls="SubTaskCalendarCollapse-{{ task.id }}">
+                    Set Due Date...
+                  </button>
+                </p>
+
+                <div class="collapse bg-secondary" style="max-width: 365px;"
+                     id="SubTaskCalendarCollapse-{{ task.id }}">
+
+                  <div class="card card-body bg-secondary d-inline-flex">
+
+                    <div class="taskcalendarbuttongroup" role="group">
+                      <button class="btn btn-secondary" type="button" id="subPrevYear-{{ task.id }}">&lt;&lt;</button>
+                      <button class="btn btn-secondary" type="button" id="subPrevMonth-{{ task.id }}">&lt;</button>
+
+                      <input class="btn btn-secondary btn-type-input"
+                             type="text" autocomplete="off" spellcheck="false"
+                             id="subCurrentMonth-{{ task.id }}">
+
+                      <input class="btn btn-secondary btn-type-input"
+                             type="text" autocomplete="off" spellcheck="false"
+                             id="subCurrentYear-{{ task.id }}">
+
+                      <button class="btn btn-secondary" type="button" id="subNextMonth-{{ task.id }}">&gt;</button>
+                      <button class="btn btn-secondary" type="button" id="subNextYear-{{ task.id }}">&gt;&gt;</button>
+                    </div>
+
+                    <div class="taskcalendarbuttondaysofweek" role="group">
+                      <button type="button" disabled class="btn btn-secondary">Su</button>
+                      <button type="button" disabled class="btn btn-secondary">Mo</button>
+                      <button type="button" disabled class="btn btn-secondary">Tu</button>
+                      <button type="button" disabled class="btn btn-secondary">We</button>
+                      <button type="button" disabled class="btn btn-secondary">Th</button>
+                      <button type="button" disabled class="btn btn-secondary">Fr</button>
+                      <button type="button" disabled class="btn btn-secondary">Sa</button>
+                    </div>
+
+                    <div class="taskcalendargrid" id="subTaskCalendarGrid-{{ task.id }}" role="group">
+                      {% for _ in range(42) %}
+                        <button type="button" class="btn btn-secondary"></button>
+                      {% endfor %}
+                    </div>
+
+                  </div>
+
+                  <div class="text-dark mt-2">
+                    <input type="text" class="form-control text-bg-secondary"
+                           name="SubTaskDueDateEntered"
+                           id="SubTaskDueDateEntered-{{ task.id }}"
+                           placeholder="2026-2-10" readonly>
+                  </div>
+
+                </div>
+                <br>
+
+                <button type="submit"
+                class="btn btn-outline-secondary mt-3"
+                formaction="{{ url_for('main.subtasks', task_id=task.id) }}"
+                formmethod="POST"
+                >Create SubTask</button>
+
+              </div>
+            </div>
+
+
+          <script>
+            document.addEventListener("DOMContentLoaded",()=>{
+
+              const cm=document.getElementById("subCurrentMonth-{{ task.id }}");
+              const cy= document.getElementById("subCurrentYear-{{ task.id }}");
+              const pm=document.getElementById("subPrevMonth-{{ task.id }}");
+              const py= document.getElementById("subPrevYear-{{ task.id }}");
+              const nm=document.getElementById("subNextMonth-{{ task.id }}");
+              const ny= document.getElementById("subNextYear-{{ task.id }}");
+              const tcg=document.getElementById("subTaskCalendarGrid-{{ task.id }}");
+              const btns = tcg.querySelectorAll("button");
+              const tdde= document.getElementById("SubTaskDueDateEntered-{{ task.id }}");
+
+              let c= new Date();
+              let mode="Days";
+
+              const mn = ["January","February","March","April","May","June",
+              "July","August","September","October","November","December"];
+
+              let m = c.getMonth();
+              let y= c.getFullYear();
+
+              let dn=0;
+              let ld=0;
+              let isClicked=false;
+
+              function updateCalendarDate(){
+                const chosen = tcg.querySelector(".selected-day");
+                if(chosen){
+                  chosen.classList.remove("btn-secondary","selected-day");
+                  chosen.classList.add("btn-secondary");
+                }
+
+                isClicked=false;
+
+                btns.forEach(b=> b.textContent="");
+                ld= new Date(y,m+1,0).getDate();
+                dn= new Date(y,m,1).getDay();
+                let de= new Date(y,m,ld).getDay();
+                let mld= new Date(y,m,0).getDate();
+
+                for(let theday=1; theday<=ld; theday++){
+                  btns[dn+(theday-1)].textContent=theday;
+                }
+
+                for(let i =0; i<dn; i++){
+                  btns[i].textContent=mld-(dn-1-i);
+                }
+
+                let thenextday=1;
+                for(let i=dn+ld; i<btns.length; i++){
+                  btns[i].textContent=thenextday++;
+                }
+              }
+
+              btns.forEach((btn,i)=>{
+
+                btn.addEventListener("click",()=>{
+
+                  const chosen = tcg.querySelector(".selected-day");
+
+                  if(chosen===btn){
+                    btn.classList.remove("btn-danger","selected-day");
+                    btn.classList.add("btn-secondary");
+                    isClicked=false;
+                    return;
+                  }
+
+                  if(chosen){
+                    chosen.classList.remove("btn-danger","selected-day");
+                    chosen.classList.add("btn-secondary");
+                  }
+
+                  btn.classList.add("btn-danger","selected-day");
+                  btn.classList.remove("btn-secondary");
+                  isClicked=true;
+
+                  const theactualday = Number(btn.textContent);
+
+                  const x=new Date(y,m,1);
+                  if (i<dn){
+                    x.setMonth(x.getMonth()-1);
+                  }
+
+                  if (i>=dn+ld){
+                    x.setMonth(x.getMonth()+1);
+                  }
+                  const yrClick=x.getFullYear();
+                  const mnClick=x.getMonth();
+
+                  const information=`${yrClick}-${mnClick+1}-${theactualday}`;
+                  tdde.value=information;
+
+                });
+
+              });
+
+              function inputParserMonth(s){
+                s= s.trim();
+                if (!s) return null;
+
+                if(/^\d+$/.test(s)){
+                  const n = Number(s);
+                  if(n>=1&&n<=12) return n-1;
+                  return null;
+                }
+
+                const sl = s.toLowerCase().slice(0,3);
+                const monthMap={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+                return (sl in monthMap) ? monthMap[sl]:null;
+              }
+
+              function renderTypedMonthYear(){
+                const mt=inputParserMonth(cm.value);
+                const my= parseInt(cy.value,10);
+
+                const newMonth=(mt!==null)? mt: m;
+                const newYear= Number.isFinite(my)? my: y;
+
+                m=newMonth;
+                y=newYear;
+                c.setFullYear(y);
+                c.setMonth(m);
+
+                displayMonth();
+                updateCalendarDate();
+              }
+
+              function displayMonth(){
+                cm.value= mn[m];
+                cy.value= y;
+              }
+
+              nm.addEventListener("click",()=>{
+                c.setMonth(c.getMonth()+1);
+                m=c.getMonth();
+                y=c.getFullYear();
+                displayMonth();
+                updateCalendarDate();
+              });
+
+              pm.addEventListener("click",()=>{
+                c.setMonth(c.getMonth()-1);
+                m=c.getMonth();
+                y=c.getFullYear();
+                displayMonth();
+                updateCalendarDate();
+              });
+
+              ny.addEventListener("click",()=>{
+                c.setFullYear(c.getFullYear()+1);
+                m=c.getMonth();
+                y=c.getFullYear();
+                displayMonth();
+                updateCalendarDate();
+              });
+
+              py.addEventListener("click",()=>{
+                c.setFullYear(c.getFullYear()-1);
+                m=c.getMonth();
+                y=c.getFullYear();
+                displayMonth();
+                updateCalendarDate();
+              });
+
+              displayMonth();
+              updateCalendarDate();
+
+              cm.addEventListener("change",renderTypedMonthYear);
+              cy.addEventListener("change",renderTypedMonthYear);
+
+              [cm,cy].forEach(element => {
+                element.addEventListener("keydown",(event)=>{
+                  if(event.key==="ENTER"){
+                    event.preventDefault();
+                    renderTypedMonthYear();
+                    element.blur();
+                  }
+                });
+              });
+
+            });
+          </script>
+
+        </div>
+
+        <div class="modal-footer bg-outline-danger">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</td>
+
+ 
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-outline-info">Update</button><br>
+
+
+  </form>
+
+
+
+{% if selected_task_id %}
+
+  <hr class="border border-secondary border-2 opacity-75 my-5">
+
+  <p class="h1 text-danger mx-auto p-2 text-center display-2 shadow-lg mb-5 bg-body-tertiary rounded"
+     style="width: 300px;">
+    SubTasks
+  </p>
+
+  {% if subtasks and subtasks|length > 0 %}
+
+  
+<script>
+  
+  let sortSubOrder = {};
+
+  function sortsubTable(colI) {
+    const table = document.getElementById("subtaskTable");
+    if (!table) return;
+
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.rows);
+
+    sortSubOrder[colI] = (sortSubOrder[colI] === "asc") ? "desc" : "asc";
+
+    const headCells = table.tHead.rows[0].cells;
+    for (let i = 0; i < headCells.length; i++) {
+      const arrow = document.getElementById("subarrow" + i);
+      if (!arrow) continue;
+      arrow.className = (i === colI) ? sortSubOrder[colI] : "inactive";
+    }
+
+    const getVal = (row, col) => {
+      const cell = row.cells[col];
+      const field = cell.querySelector("input,select,textarea");
+      const v = field ? field.value : cell.textContent;
+      return (v || "").trim();
+    };
+
+    rows.sort((a, b) => {
+      const aVal = getVal(a, colI);
+      const bVal = getVal(b, colI);
+
+      if (colI === 7 || colI === 8) {
+        const aDate = new Date(aVal);
+        const bDate = new Date(bVal);
+        return (sortSubOrder[colI] === "asc") ? (aDate - bDate) : (bDate - aDate);
+      }
+
+      return (sortSubOrder[colI] === "asc")
+        ? aVal.localeCompare(bVal, undefined, { numeric: true, sensitivity: "base" })
+        : bVal.localeCompare(aVal, undefined, { numeric: true, sensitivity: "base" });
+    });
+
+    rows.forEach(r => tbody.appendChild(r));
+  }
+
+</script>
+
+  <div class="task-container mx-4">
+
+    <form method="POST" action="{{ url_for('main.update_subtasks', task_id=selected_task_id) }}">
+      <table class="table table-secondary table-hover" id="subtaskTable">
+        <thead>
+          <tr>
+            <th onclick="sortsubTable(0)">#ID<span id ="subarrow0" class="inactive"></span></th>
+            <th onclick="sortsubTable(1)">SubTask Name<span id ="subarrow1" class="inactive"></span></th>
+            <th onclick="sortsubTable(2)">SubTask Category<span id ="subarrow2" class="inactive"></span></th>
+            <th onclick="sortsubTable(3)">SubTask Status<span id ="subarrow3" class="inactive"></span></th>
+            <th onclick="sortsubTable(4)">SubTask Priority<span id ="subarrow4" class="inactive"></span></th>
+            <th onclick="sortsubTable(5)">SubTask Description<span id ="subarrow5" class="inactive"></span></th>
+            <th onclick="sortsubTable(6)">SubTask Location<span id ="subarrow6" class="inactive"></span></th>
+            <th onclick="sortsubTable(7)">SubTask Due Date<span id ="subarrow7" class="inactive"></span></th>
+            <th onclick="sortsubTable(8)">SubTask Creation Date<span id ="subarrow8" class="inactive"></span></th>
+            <th>Delete SubTask</th>
+            <th onclick="sortsubTable(9)">SubTask Reminder<span id ="subarrow9" class="inactive"></span></th>
+            <th onclick="sortsubTable(10)">Parent Task<span id ="subarrow10" class="inactive"></span></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for subtask in subtasks %}
+          <tr>
+
+            <td>
+              <input type="hidden" name="subtask_db_id[]" value="{{ subtask.id }}">
+              <input type="text"
+                     class="form-control"
+                     style="background-color: transparent;"
+                     name="subtask_id[]"
+                     value="{{ subtask.subtask_id }}">
+            </td>
+
+            <td>
+              <input type="text"
+                     class="form-control"
+                     style="background-color: transparent;"
+                     name="subtask_name[]"
+                     value="{{ subtask.subtask_name }}">
+            </td>
+
+            <td>
+              <input type="text"
+                     class="form-control"
+                     style="background-color: transparent;"
+                     name="subtask_category[]"
+                     value="{{ subtask.subtask_category }}">
+            </td>
+
+            <td>
+              <select class="form-control"
+                      style="background-color: transparent;"
+                      name="subtask_status[]">
+                <option value="Incomplete" {% if subtask.subtask_status == "Incomplete" %}selected{% endif %}>Incomplete</option>
+                <option value="In-Progress" {% if subtask.subtask_status == "In-Progress" %}selected{% endif %}>In-Progress</option>
+                <option value="Complete" {% if subtask.subtask_status == "Complete" %}selected{% endif %}>Complete</option>
+              </select>
+            </td>
+
+            <td>
+              <input type="text"
+                     class="form-control"
+                     style="background-color: transparent;"
+                     name="subtask_priority[]"
+                     value="{{ subtask.subtask_priority }}">
+            </td>
+
+            <td>
+              <textarea class="form-control"
+                        style="background-color: transparent;"
+                        name="subtask_description[]">{{ subtask.subtask_description }}</textarea>
+            </td>
+
+            <td>
+              <input type="text"
+                     class="form-control"
+                     style="background-color: transparent;"
+                     name="subtask_location[]"
+                     value="{{ subtask.subtask_location }}">
+            </td>
+
+            <td>
+              <input type="text"
+                     class="form-control"
+                     style="background-color: transparent;"
+                     name="subtask_due_date_entered[]"
+                     value="{{ subtask.subtask_due_date_entered }}">
+            </td>
+
+            <td>{{ subtask.subtask_date_created.date() }}</td>
+
+            <td>
+              <button type="submit" class="btn btn-danger"
+                      formaction="{{ url_for('main.delete_subtasks', subtask_id=subtask.id) }}"
+                      formmethod="POST">
+                Delete
+              </button>
+            </td>
+
+            <td>
+              <select class="form-control"
+                      style="background-color: transparent;"
+                      name="subtask_reminder_status[]">
+                <option value="ON" {% if subtask.subtask_reminder_status == "ON" %}selected{% endif %}>ON</option>
+                <option value="OFF" {% if subtask.subtask_reminder_status == "OFF" %}selected{% endif %}>OFF</option>
+              </select>
+            </td>
+
+            <td>
+              {{ subtask.task.task_name if subtask.task else "—" }}
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <button type="submit" class="btn btn-outline-danger">Update SubTasks</button><br>
+    </form>
+
+  </div>
+
+  {% else %}
+    <p class="h1 text-danger mx-auto text-center mb-5" style="width: 600px;">
+      No subtasks have been created.
+    </p>
+  {% endif %}
+
+{% endif %}
+
+
+
+
+
+
+</div>
+
+{% else %}
+  <p class="h1 text-primary mx-auto text-center mb-5" style="width: 500px;">
+    No tasks have been created.
+  </p>
+{% endif %}
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+<div id="taskReminder" class="toast" role="alert" data-autohide="false">
+  <div class = "toast-header">
+    <i class="bi bi-app-indicator me-2 fs-4"></i>
+    <strong class ="me-auto">Reminder</strong>
+    <small>Some Time Ago...</small>
+    <button type = "button" class ="btn-close" data-bs-dismiss="toast"></button>
+  </div>
+  <div class ="toast-body">
+    Your task is due today!
+  </div>
+</div>
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded",function(){
+
+
+
+const r1path = "{{ url_for('static', filename='audio/reminder.wav') }}";
+const r1=new Audio(r1path);
+
+let d= document.querySelectorAll(".task_due_date");
+const tr = document.getElementById("taskReminder");
+
+const rm= document.querySelectorAll(".task_rms");
+
+rm.forEach(i=>{
+
+  
+i.addEventListener("change",function(){
+
+  const row = this.closest("tr");
+
+  const tInput = row.querySelector(".task_due_date");
+
+  if(tInput){
+    tInput.dataset.reminder=this.value;
+  }
+
+  if(this.value==="OFF" && tInput){
+    localStorage.removeItem(`AlreadyReminded:${tInput.dataset.taskid}`)
+  }
+
+});
+
+
+});
+
+
+const cd = new Date();
+
+let rs= false;
+
+d.forEach(i=>{
+  if(rs) return;
+if (!i.value || !i.value.trim()) return;
+const dateObj = new Date(i.value);
+
+if(i.dataset.status=== "Complete"){ return;} 
+if(i.dataset.reminder==="OFF"){return;}
+
+if (cd.toDateString()===dateObj.toDateString()){
+
+  const check = `AlreadyReminded:${i.dataset.taskid}`;
+  if(localStorage.getItem(check)===cd.toDateString()) return;
+
+  localStorage.setItem(check, cd.toDateString());
+
+
+  rs=true;
+  const toast = bootstrap.Toast.getOrCreateInstance(tr);
+
+  tr.addEventListener("hidden.bs.toast",()=>{
+    toast.dispose();
+
+  },{once: true});
+
+  toast.show(); 
+  r1.play();
+
+
+}
+
+
+});
+
+
+
+});
+
+
+</script>
+
+{% endblock %}

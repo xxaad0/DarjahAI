@@ -1,0 +1,355 @@
+
+{% extends 'base.html' %}
+
+    {% block head %} {% endblock %}
+    {% block title %}DarjahAI ~ Chat{% endblock %}
+
+{% block html_class %}home-page{% endblock %}
+{% block body_class %}home-page{% endblock %}
+{% block body %}
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<nav class="navbar" style="background-color:#e3f2fd;" data-bs-theme="light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/home">DarjahAI</a>
+
+      <div class ="robotbi-initial-section">
+
+    <a href = "/home">
+    <svg xmlns="http://www.w3.org/2000/svg"
+     fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
+  <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
+  <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+</svg>
+</a>
+</div>
+
+
+    <button class="navbar-toggler" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navbarDarjahAI"
+      aria-controls="navbarDarjahAI" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarDarjahAI">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            More
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/tasks">Create Tasks</a></li>
+            <li><a class="dropdown-item" href="/chat">Chat</a></li>
+            <li><a class="dropdown-item" href="/stats">Stats</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/verify">Verify Email</a></li>
+            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+          <a class="nav-link" href="/home">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/">Go Back</a>
+        </li>
+      </ul>
+
+
+    </div>
+  </div>
+</nav>
+
+<div class="bg-dark bg-gradient position-relative" style="min-height: 100vh;">
+
+
+
+
+<div class="offcanvas offcanvas-start bg-dark border-bottom border-body"
+ data-bs-backdrop="static" data-bs-scroll="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+ <div class="offcanvas-header">
+     <h5 class="offcanvas-title" id="offcanvasScrollingLabel">More</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+ </div>
+ <div class = "offcanvas-body d-flex flex-column">
+<a href="{{ url_for('main.chat_new') }}"
+ class="btn btn-outline-secondary w-100 position-relative text-center">
+    <i class="bi bi-chat-left position-absolute start-0 top-50 translate-middle-y ms-3"></i>
+    <span>New Chat</span>
+ </a>
+<h3 class="text-light mt-3">Chats</h3>
+
+{% for s in sessions %}
+<a href="/chat?session_id={{s.id}}"
+class="link-opacity-50-hover link-offset-2 link-underline link-underline-opacity-0 text-center mb-3">
+{{s.title}}
+              <form method="POST" action="{{ url_for('main.chat_delete', session_id=s.id) }}">
+            <button type="submit" class="btn btn-outline-danger p-2 mb-3 mt-3"
+            onclick="return confirm('Delete this chat?');">Delete</button>
+              </form>
+
+</a>
+{% endfor %}
+
+<div class="mt-auto border-secondary border-top p-3">
+  <form method="POST" action = "{{url_for('main.billing_checkout')}}">
+    <button class="btn btn-outline-light w-100" type="submit">Premium</button>
+    </form>
+</div>
+</div>
+</div>
+
+
+    <button class="btn btn-dark position-fixed z-3 ms-2 mt-2"
+      type="button" data-bs-toggle="offcanvas"data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"
+    
+    >
+    <i class="bi bi-robot"></i>
+</button>
+
+<main class="d-flex flex-grow-1 position-relative flex-column">
+
+    <div class="container text-center mt-3" style="width: 250px;">
+        <h1 class="p-3 mb-2 text-primary fw-bold fs-1 text-wrap">DarjahAI</h1>
+    </div>
+
+    <div class="row g-3" id="colVis">
+        <div class="col-12">
+            <h2 class="text-white mb-3 mt-3 text-center fw-semibold mx-auto">Capabilites</h2>
+        </div>
+               <div class="col-md-4">
+            <h2 class="text-body bg-white mb-3 mt-3 text-center fw-medium mx-auto" style="width: 250px;">Ability to Remember</h2>
+        </div>
+               <div class="col-md-4">
+            <h2 class="text-body bg-white mb-3 mt-3 text-center fw-medium mx-auto" style="width: 250px;">Amazing Task Assistant</h2>
+        </div>
+               <div class="col-md-4">
+            <h2 class="text-body bg-white mb-3 mt-3 text-center fw-medium mx-auto" style="width: 250px;">Blocks Unsafe Requests</h2>
+        </div>
+               <div class="col-12">
+            <h2 class="text-danger mb-3 mt-3 text-center fw-semibold mx-auto">Limitations</h2>
+        </div>
+               <div class="col-md-4">
+            <h2 class="text-danger bg-white mb-3 mt-3 text-center fw-medium mx-auto" style="width: 250px;">Possible Factual Mistakes</h2>
+        </div>
+               <div class="col-md-4">
+            <h2 class="text-danger bg-white mb-3 mt-3 text-center fw-medium mx-auto" style="width: 250px;">Occasional Biased Output</h2>
+        </div>
+               <div class="col-md-4">
+            <h2 class="text-danger bg-white mb-3 mt-3 text-center fw-medium mx-auto" style="width: 250px;">Limited Model Knowledge</h2>
+        </div>
+    </div>
+    
+
+    <div class="position-relative">
+        <div class="input-group mx-auto mt-5" style="max-width:500px;" id="hideDiv">
+            <textarea class="form-control bg-body-tertiary text-black" required
+            id="chatInput1"
+            rows="1" 
+            placeholder="Send a message..."
+            style="resize: none; border-radius: 1rem 0 0 1rem;"
+            ></textarea>
+        <button class="btn btn-outline-success" id="submitChatBtn" type="button" style="border-radius: 0 1rem 1rem 0;"><i class="bi bi-send"></i></button>
+        <div class="invalid-feedback">Please enter a message...</div>
+    </div>
+    </div>
+
+        <div class="position-relative">
+            <div class="chatbotGrid border border-primary rounded d-none mx-auto p-4 bg-dark"
+            style="min-height:55vh; max-width:1400px; width:100%;"
+
+            id="chatrevealGrid">
+            {% for m in msgs%}
+
+            {% if m.role=="user" %}
+
+            <div class="border border-primary rounded p-4 bg-secondary text-white me-auto"
+            style="width: 50%; min-height: 150px; white-space: pre-wrap; overflow-wrap:anywhere; word-break:break-word;"
+            >{{m.content}}</div>
+            
+            {% else %}
+            <div class="border border-primary rounded ms-auto p-4 bg-white text-black"
+            style="width: 50%; min-height: 150px; white-space: pre-wrap; overflow-wrap:anywhere; word-break:break-word;">{{m.content}}</div>
+
+            {% endif %}
+
+
+            {% endfor %}
+
+
+
+            </div>
+
+        <div class="input-group mx-auto d-none" style="width: min(120vw, 1400px);" id="revealDiv">
+            <textarea class="form-control bg-primary-subtle text-black" 
+            rows="1" 
+            id="chatInput2"
+            placeholder="Send a message..."
+            style="resize: none;"
+            ></textarea>
+        <button class="btn btn-outline-primary" id="submitChatBtn2" type="button"><i class="bi bi-send"></i></button>
+        </div>
+    </div>
+</main>
+
+</div>
+
+<script>
+
+
+
+document.addEventListener("DOMContentLoaded", function(){
+
+
+    scb = document.getElementById("submitChatBtn");
+    scb2= document.getElementById("submitChatBtn2");
+    rd = document.getElementById("revealDiv");
+    cv= document.getElementById("colVis");
+    hd= document.getElementById("hideDiv");
+    crg= document.getElementById("chatrevealGrid");
+    input=document.getElementById("chatInput1");
+    input2= document.getElementById("chatInput2");
+
+    let chatToggle= false;
+
+    let curSes = JSON.parse('{{ activeSessions.id|tojson if activeSessions else "null" }}');
+
+    const ismsg = JSON.parse('{{ (msgs|length > 0)|tojson }}');
+
+    if (ismsg){
+      turnChatToggle();
+        crg.scrollTop=crg.scrollHeight;
+        input2.focus();
+      
+
+    }
+
+
+
+
+    function turnChatToggle(){
+      if (chatToggle) return;
+      
+      rd.classList.remove("d-none");
+      crg.classList.remove("d-none");
+      cv.classList.add("d-none");
+      hd.classList.add("d-none");
+      crg.classList.add("overflow-auto");
+      crg.style.maxHeight = "55vh";
+      
+      chatToggle=true;
+
+      
+
+    }
+
+    function appendText(text,role){
+      const newText= document.createElement("div");
+
+      newText.className= role === "user" ? "border border-primary rounded p-4 bg-secondary text-white me-auto"
+        : "border border-primary rounded p-4 bg-white text-black ms-auto";
+
+      newText.style.width= "50%";
+      newText.style.whiteSpace= "pre-wrap";
+      newText.style.minHeight= "150px";
+      newText.textContent= text;
+
+      crg.appendChild(newText);
+
+      crg.scrollTop= crg.scrollHeight;
+
+
+    }
+
+    async function sendThis(preText) {
+      const postText= (preText || "").trim()
+      if(!postText) return;
+
+      appendText(postText,"user");
+      scb.disabled= true;
+      scb2.disabled=true;
+
+      try{
+        const r= await fetch("/chat/api",{
+
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body: JSON.stringify({message:postText,session_id: curSes}),
+
+        });
+
+        const d= await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(d.error || "Request Failed");
+
+        appendText(d.reply || "(empty reply)","ai");
+
+        if  (!curSes && d.session_id!== curSes){
+          curSes=d.session_id
+          window.location.href = "/chat?session_id=" + curSes;
+        }
+
+      } catch(err){
+        appendText("Error:"+err.message,"ai");
+
+      }finally{
+        scb.disabled=false;
+        scb2.disabled=false;
+
+      }
+      
+    }
+
+    scb.addEventListener("click", function(){
+
+
+    if(input.value.trim().length===0){
+        input.focus();
+        input.classList.add("is-invalid");
+        return;
+    }
+    input.classList.remove("is-invalid");
+
+    turnChatToggle();
+    const i =input.value;
+    input.value="";
+    sendThis(i);
+    input2.focus();
+    });
+
+
+    scb2.addEventListener("click", function(){
+    sendThis(input2.value);
+    input2.value="";
+    input2.focus();
+    });
+
+    input2.addEventListener("keydown",(e)=>{
+
+      if (e.key==="Enter" && !e.shiftKey){
+        e.preventDefault();
+        scb2.click();
+      }
+
+    });
+
+});
+
+</script>
+{% endblock %}

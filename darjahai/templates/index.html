@@ -1,0 +1,95 @@
+
+{% extends 'base.html' %}
+
+    {% block head %} {% endblock %}
+    {% block title %}DarjahAI ~ Confirm{% endblock %}
+
+{%block body %}
+
+<script>
+    
+
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    const strt= document.getElementById("start-confirmation");
+    const preSec= document.getElementById("pre-confirmation");
+    const prebtn= document.getElementById("pre-confirmation-btn");
+    const postSec= document.getElementById("post-confirmation");
+    const aud1path ='./static/audio/audio1.mp3';
+    const aud1=new Audio(aud1path);
+
+    const aud2path ='./static/audio/startup.m4a';
+    const aud2=new Audio(aud2path);
+
+    strt.addEventListener('click',()=>{
+        aud1.play();
+        strt.style.display="none";
+        preSec.classList.add('pre-confirmation');
+        preSec.style.display="flex";
+});
+
+prebtn.addEventListener('click',()=>{
+        aud2.play();
+        preSec.style.display="none";
+        postSec.style.display="block";
+        });
+
+
+        const svgtxt=document.getElementById("DarjahAI-logo");
+
+        if(svgtxt){
+
+        svgtxt.addEventListener("animationend",(event)=>{
+                if(event.animationName==="fadeout"){
+                        window.location.href="/home";
+                }
+        });
+}
+});
+        
+
+</script>
+
+<section class = "start-confirmation" id = "start-confirmation">
+<button type = "button" class = "start-confirmation-btn" id="start-confirmation-btn">Start</button>
+</section>
+
+    
+
+    <section id = "pre-confirmation" style="display: none;">
+        <p class = "fade-out-text">Hello.</p>
+        <p class = "fade-in-out-text">You are about to enter DarjahAI. </p>
+        <p class = "fade-in-out-text">The screen will gradually change from
+            black to white. </p>
+        <p class = "fade-in-out-text">If you are at subject to seizures,
+            please check your accessibility settings before entering. </p>
+        <p class = "fade-in-out-text">Would you like to enter the website?</p>
+        <button type = "button" class = "pre-confirmation-btn" id="pre-confirmation-btn" role = "button"><span class ="txt">Confirm</span></button>
+    </section>
+
+    <main>
+    <section class = "post-confirmation" id="post-confirmation" style="display: none;">
+        <div class = "animated-background">
+             <svg id = "DarjahAI-svg" viewBox="0 0 1000 200">
+                <ellipse id = "DarjahAI-logo-circle" cx = "400" cy="100" rx="360" ry="95"></ellipse>
+            <text id = "DarjahAI-logo"
+                x="50%"
+                y="50%"
+                text-anchor="middle"
+                dominant-baseline="middle"
+                font-size="100"
+                font-weight="1000">
+                DarjahAI
+            </text>
+        </svg>
+
+
+        </div>
+</section>
+
+
+</main>
+
+   {% endblock %}
+

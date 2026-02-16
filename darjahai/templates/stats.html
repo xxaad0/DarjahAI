@@ -1,0 +1,136 @@
+
+{% extends 'base.html' %}
+
+    {% block head %} {% endblock %}
+    {% block title %}DarjahAI ~ Stats{% endblock %}
+
+{% block html_class %}home-page{% endblock %}
+{% block body_class %}home-page{% endblock %}
+{% block body %}
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<nav class="navbar" style="background-color:#e3f2fd;" data-bs-theme="light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/home">DarjahAI</a>
+
+      <div class ="robotbi-initial-section">
+
+    <a href = "/home">
+    <svg xmlns="http://www.w3.org/2000/svg"
+     fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
+  <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
+  <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+</svg>
+</a>
+</div>
+
+
+    <button class="navbar-toggler" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navbarDarjahAI"
+      aria-controls="navbarDarjahAI" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarDarjahAI">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            More
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/tasks">Create Tasks</a></li>
+            <li><a class="dropdown-item" href="/chat">Chat</a></li>
+            <li><a class="dropdown-item" href="/stats">Stats</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/verify">Verify Email</a></li>
+            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+          <a class="nav-link" href="/home">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/">Go Back</a>
+        </li>
+      </ul>
+
+
+    </div>
+  </div>
+</nav>
+
+<div class="bg-dark bg-gradient" style="min-height: 100vh; padding-top: 1.5rem;">
+
+  <div class="player-header mb-3">
+
+    <h1 class="p-3 mb-3 bg-primary text-white text-center">SYSTEM ACCESS GRANTED</h2>
+    <p class="p-3 mt-5 bg-dark-subtle text-dark-emphasis text-center mx-auto" style="max-width: 200px;">Logged in as: <strong>{{ current_user.username }}</strong></p>
+    
+    <h3 class="p-3 mb-2 bg-black text-white text-center mx-auto"  style="max-width: 200px;">Character</h3>
+    <p  class="p-3 mb-2 bg-dark-subtle text-dark-emphasis  text-center mx-auto" style="max-width: 200px;"><strong>{{ character.c_name }}</strong> ~ {{ character.c_class }}</p>
+    <p  class="p-3 mb-2 bg-dark-subtle text-dark-emphasis  text-center mx-auto" style="max-width: 200px;">Level: <strong>{{ character.level }}</strong> ~ Total XP: <strong>{{ character.xp_total }}</strong></p>
+
+       
+    <h3 class="p-3 mb-2 mt-5 bg-light text-dark text-center mx-auto"   style="max-width: 200px;">Streaks</h3>
+    <p  class="p-3 mb-2 bg-light-subtle text-light-emphasis text-center mx-auto" style="max-width: 200px;"><strong>{{ character.dailystreak }}</strong></p>
+    <p  class="p-3 mb-2 bg-light-subtle text-light-emphasis text-center mx-auto" style="max-width: 200px;">Best Streak: <strong>{{ character.beststreak }}</strong> ~ Total Active days: <strong>{{ character.activedaystotal }}</strong></p>
+
+
+  </div>
+    <div class="analysis-header ms-3 text-center mx-auto" style="max-width: 500px;">
+        {% if run_id %}
+        <h3 class="p-3 mb-2 bg-primary-subtle text-primary-emphasis">Stats</h3>
+        <div class="p-3 mb-2 bg-primary text-white">
+
+            Displaying run: <span class = "-3 mb-2 bg-secondary-subtle text-secondary-emphasis">{{ run_id[:8] }} ...</span>
+            <br><br>~TOP TERMS: {{ latestterms|length}}
+            <br>~HISTORY: {{ history|length}}
+
+
+        </div>
+        <ul class="list-group">
+            {% for t in latestterms %}
+                <li  class="list-group-item list-group-item-primary">{{ loop.index }} . {{ t.task_term }} - {{ "%2.f"|format(t.task_score) }}</li>
+            {% endfor %}
+        </ul>
+        <ul class="list-group">
+            {% for run_version, computed_at in history %}
+
+                <li  class=
+                "list-group-item 
+                list-group-item-info">
+                <a class="link-offset-2 
+                link-offset-3-hover link-underline 
+                link-underline-opacity-0 link-underline-opacity-75-hover"
+                 href="{{ url_for('main.stats',run_id=run_version) }}">
+                 {{ run_version[:8] }} ...</a> - {{ computed_at.strftime("%Y-%m-%d %H:%M") }}
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+
+        <div class= "text-danger-emphasis bg-dark">No stats can be shown. There are no tasks.</div>
+        {% endif %}
+    </div>
+ 
+</div>
+
+{% endblock %}

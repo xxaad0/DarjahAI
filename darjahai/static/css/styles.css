@@ -1,0 +1,421 @@
+
+:root{
+--bg: rgb(0, 0, 0);
+--txtclr:rgb(255, 255, 255);
+--tshadow: 0 -1px 4px #FFF,
+ 0 -2px 10px #ff0, 0 -10px 20px #ff8000,
+  0 -18px 40px #F00;
+}
+
+@keyframes fadeout{
+0%{
+    opacity: 1;
+}
+
+100%{
+    opacity: 0;
+}
+
+}
+
+
+@keyframes fadein{
+0%{
+    opacity: 0;
+}
+
+100%{
+    opacity: 1;
+}
+
+}
+
+@keyframes fadeinandout {
+
+0%{
+    opacity: 0;
+}
+20%{
+    opacity: 1;
+}
+
+80%{
+    opacity: 1;
+}
+100%{
+    opacity: 0;
+}
+}
+
+.fade-out-text{
+    animation: fadeout 2s forwards;
+    animation-delay: 2s;
+    font-size: xx-large;
+}
+
+.fade-in-out-text{
+    opacity: 0;
+    animation-delay: 2.5s;
+    font-size: xx-large;
+
+
+}
+
+
+
+.fade-in-out-text:nth-of-type(2){
+    animation: fadeinandout 3s forwards;
+    animation-delay: 2s;
+}
+
+.fade-in-out-text:nth-of-type(3){
+    animation: fadeinandout 4s forwards;
+    animation-delay: 4s;
+}
+.fade-in-out-text:nth-of-type(4){
+    animation: fadeinandout 7s forwards;
+    animation-delay: 7s;
+}
+.fade-in-out-text:nth-of-type(5){
+    animation: fadeinandout 3s forwards;
+    animation-delay: 12s;
+}
+
+@keyframes rainbow{
+
+    0%{
+        background-position: 0% 75%;
+
+    }
+
+    25%{
+        background-position: 60% 80%;
+
+    }
+
+    50%{
+        background-position: 100% 85%;
+
+
+    }
+
+    75%{
+
+        background-position: 40% 95%;
+
+
+    }
+
+    100%{
+
+        background-position: 0% 97%;
+
+
+    }
+}
+
+html, body{
+    margin:0;
+    padding: 0;
+overflow-x: hidden;
+}
+
+body{
+    font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight:300;
+  font-style: normal;
+}
+
+.start-confirmation{
+    background: var(--bg);
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border: none;
+    position: fixed;
+    inset: 0;
+}
+
+.start-confirmation-btn{
+ border: 3px solid red;
+    border-radius: .35rem;
+    box-shadow: rgba(0,0,0,0.3) 0 2px 4px 0;
+    box-sizing: border-box;
+    color:#c95555;
+    cursor: pointer;
+     text-decoration: none;
+    transition: all 350ms;
+    user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  animation: fadein 3.2s forwards;
+      font-size: xx-large;
+    font-weight: 1000;
+}
+
+.start-confirmation-btn:hover, .start-confirmation-btn:focus{
+ border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  color: rgba(12, 8, 8, 0.65);
+}
+
+.start-confirmation-btn:hover{
+    transform: translateY(-1px);
+}
+
+.start-confirmation-btn:active{
+     border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 10px;
+  color: rgba(0, 0, 0, 0.65);
+      transform: translateY(0);
+
+}
+
+.pre-confirmation{
+    text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+width: 100vw;
+height: 100vh;
+background: var(--bg);
+transition: transform 10s ease;
+}
+
+.pre-confirmation p{
+text-shadow: var(--tshadow);
+color: var(--txtclr);
+}
+
+.pre-confirmation-btn{
+    opacity: 0;
+    animation: fadein 3.2s forwards;
+    animation-delay: 14s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    background-image: linear-gradient(140deg,#ff0000 50%,#c95555);
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: 1000;
+    letter-spacing: .5px;
+    text-decoration: none;
+    max-width: 100%;
+    font-size: xx-large;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    transition: transform 350ms, opacity 350ms;
+    display: inline-flex;
+    padding: 15px 15px;
+    border: 1px solid black;
+}
+
+.audio1{
+    display: none;
+}
+.pre-confirmation-btn:active{
+border: 3px solid;
+border-color:rgb(255, 85, 0);
+transition: transform 2s ease-in-out;
+}
+
+.pre-confirmation-btn:hover{
+    outline: 0;
+}
+
+.pre-confirmation-btn span{
+    transition: all 300ms;
+}
+
+.pre-confirmation-btn:hover span{
+    transform: scale(.9);
+    opacity: .6;
+}
+
+
+
+.animated-background{
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(130deg,black,rgb(13, 13, 13),rgb(19, 19, 19),rgb(59, 59, 59),rgb(100, 100, 100),rgb(152, 152, 152));
+    background-size: 2000% 2000%;
+    animation: rainbow 10s ease;
+}
+
+svg{
+    width: 800px;
+    height: 200px;
+
+}
+
+#DarjahAI-logo{
+fill:transparent;
+stroke:#ff0000;
+stroke-width: 3;
+stroke-linecap: circle;
+stroke-linejoin: circle;
+
+stroke-dasharray: 3000;
+stroke-dashoffset: 3000;
+
+animation: draw 8s linear forwards,fadeout 10s linear forwards;
+animation-delay: 0s,4s;
+}    
+
+#DarjahAI-logo-circle{
+
+    stroke:#ff0000;
+    stroke-dasharray: 3000;
+stroke-dashoffset: 3000;
+animation: draw 16s linear forwards, fadeout 1s linear forwards;
+animation-delay: 0s,10s;
+stroke-width: 3;
+fill:transparent;
+
+}
+
+@keyframes draw{
+    to{
+        stroke-dashoffset: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .animated-background{
+        animation: none;
+    }
+}
+
+
+html.home-page, body.home-page{
+    scrollbar-width: thin;
+    scrollbar-color:var(--bs-secondary-color) var(--bs-body-bg);
+}
+
+html.home-page::-webkit-scrollbar, body.home-page::-webkit-scrollbar{
+    width: 10px;
+}
+
+html.home-page::-webkit-scrollbar-track, body.home-page::-webkit-scrollbar-track{
+    background: var(--bs-body-bg);
+}
+
+html.home-page::-webkit-scrollbar-thumb, body.home-page::-webkit-scrollbar-thumb{
+    background: var(--bs-secondary-color);
+    border-radius: 1000px;
+    border: 2px solid var(--bs-body-bg);
+}
+
+
+.robotbi-initial-section .bi.bi-robot{
+  width: 20px !important;
+  height: 20px !important;
+}
+
+
+.taskcalendarbuttongroup{
+  display: grid;
+  justify-content: start;
+  gap: .25rem;
+  flex-wrap: nowrap;
+  width: max-content;
+  align-items: center;
+  grid-template-columns: 2.5rem 2.5rem 10ch 10ch 2.5rem 2.5rem;
+}
+
+.taskcalendarbuttongroup{
+    width: 100%;
+    padding:.25rem 0;
+    white-space:nowrap;
+}
+
+#currentMonth{
+    min-width: 10ch;
+    text-align: center;
+}
+
+#currentYear{
+    min-width: 4ch;
+    text-align: center;
+}
+
+#prevMonth, #prevYear, #nextMonth, #nextYear{
+    width: 2.5rem;
+    text-align: center;
+}
+
+
+
+:root{
+  --fs-hero: clamp(1.35rem, 4.2vw, 2.2rem);
+  --fs-btn:  clamp(1.15rem, 3.6vw, 2.1rem);
+}
+
+svg{
+  max-width: 100%;
+  width: min(92vw, 800px);
+  height: auto;
+}
+
+.pre-confirmation{
+  padding: clamp(12px, 3vw, 28px);
+  box-sizing: border-box;
+}
+
+.fade-out-text,
+.fade-in-out-text{
+  font-size: var(--fs-hero);
+  line-height: 1.15;
+}
+
+.start-confirmation-btn{
+  font-size: var(--fs-btn);
+  padding: clamp(10px, 2.5vw, 16px) clamp(12px, 3vw, 20px);
+}
+
+.pre-confirmation-btn{
+  font-size: var(--fs-btn);
+  padding: clamp(10px, 2.5vw, 16px) clamp(12px, 3vw, 20px);
+  max-width: min(92vw, 520px);
+  text-align: center;
+}
+
+@media (max-width: 576px){
+  .taskcalendarbuttongroup{
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    gap: .35rem;
+  }
+
+  #prevMonth, #prevYear, #nextMonth, #nextYear{
+    width: 2.25rem;
+  }
+  #currentMonth{ min-width: 9ch; }
+  #currentYear{ min-width: 4ch; }
+}
+
+@media (min-width: 577px) and (max-width: 992px){
+  svg{
+    width: min(88vw, 700px);
+  }
+  .taskcalendarbuttongroup{
+    gap: .35rem;
+  }
+}
+
+@media (max-width: 360px){
+  .pre-confirmation-btn,
+  .start-confirmation-btn{
+    letter-spacing: 0; /
+  }
+}
+
+@media (min-width: 1400px){
+  svg{
+    width: min(50vw, 900px);
+  }
+}

@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:16
+    container_name: darjahai-postgres
+    environment:
+      POSTGRES_USER: darjahai
+      POSTGRES_PASSWORD: darjahai
+      POSTGRES_DB: darjahai
+    ports:
+      - "5432:5432"
+    volumes:
+      - darjahai_pgdata:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: darjahai-web
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    environment:
+      SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://darjahai:darjahai@db:5432/darjahai
+      FLASK_APP: darjahai:create_app
+      FLASK_DEBUG: "1"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    command: flask --app darjahai:create_app run --host=0.0.0.0 --port=5000 --debug
+
+volumes:
+  darjahai_pgdata:
+    name: darjahai_pgdata

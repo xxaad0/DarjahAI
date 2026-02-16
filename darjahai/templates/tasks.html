@@ -1,0 +1,478 @@
+
+{% extends 'base.html' %}
+
+    {% block head %} {% endblock %}
+    {% block title %}DarjahAI ~ Dashboard{% endblock %}
+
+{% block html_class %}home-page{% endblock %}
+{% block body_class %}home-page{% endblock %}
+{% block body %}
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<nav class="navbar" style="background-color:#e3f2fd;" data-bs-theme="light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/home">DarjahAI</a>
+
+      <div class ="robotbi-initial-section">
+
+    <a href = "/home">
+    <svg xmlns="http://www.w3.org/2000/svg"
+     fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
+  <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
+  <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+</svg>
+</a>
+</div>
+
+
+    <button class="navbar-toggler" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navbarDarjahAI"
+      aria-controls="navbarDarjahAI" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarDarjahAI">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            More
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/tasks">Create Tasks</a></li>
+            <li><a class="dropdown-item" href="/management">Manage Tasks</a></li>
+            <li><a class="dropdown-item" href="/chat">Chat</a></li>
+            <li><a class="dropdown-item" href="/stats">Stats</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/verify">Verify Email</a></li>
+            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+          <a class="nav-link" href="/home">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/">Go Back</a>
+        </li>
+      </ul>
+
+
+    </div>
+  </div>
+</nav>
+
+<div class="bg-dark bg-gradient" style="min-height: 100vh; padding-top: 1.5rem;">
+
+  <form class="row g-3 shadow-lg p-3 bg-info-subtle rounded ms-4 me-4 mt-4" method="POST">
+
+    <div class ="row">
+    <div class ="col-3 text-dark ms-4">
+      <label for ="TaskName" class = "form-label fw-semibold">Task Name:</label>
+      
+      <input type = "text" class ="form-control text-bg-light"
+      name ="TaskName" id ="TaskName" placeholder="Do Laundry...">
+    </div>
+    <div class ="col-2 text-dark ms-4">
+      <label for ="TaskID" class = "form-label fw-semibold">Task ID:</label>
+      <input type = "text" class ="form-control text-bg-light"
+      name = "TaskID" id ="TaskID" placeholder="#001">
+    </div>
+    <div class ="col-3 text-dark ms-4">
+      <label for ="TaskCategory" class = "form-label fw-semibold">Task Category:</label>
+      <input type = "text" class ="form-control text-bg-light"
+      name ="TaskCategory" id ="TaskCategory" placeholder="Household Chores">
+    </div>
+    <div class ="col-2 text-dark ms-4">
+      <label for ="TaskStatus" class = "form-label fw-semibold">Task Status:</label>
+      <select class ="form-control text-bg-light"
+      name ="TaskStatus" id ="TaskStatus">
+      <option value="Incomplete" selected>Incomplete</option>
+      <option value="In-Progress">In-Progress</option>
+      <option value="Complete">Complete</option>
+      </select>
+    </div>
+        <div class ="col-1 text-dark ms-4">
+      <label for ="TaskPriority" class = "form-label fw-semibold">Task Priority:</label>
+      <input type = "text" class ="form-control text-bg-light"
+      name ="TaskPriority" id ="TaskPriority" placeholder="1">
+    </div>
+    </div>
+    <div class ="row">
+    <div class ="col md-6 text-dark ms-4">
+      <label for ="TaskDescription" class = "form-label fw-semibold mt-3">Task Description:</label>
+      <textarea class ="form-control text-bg-light"
+      name="TaskDescription" id ="TaskDescription" placeholder="Put the blue clothes and turn it on..." rows="3"></textarea>
+    </div>
+    
+    </div>
+    
+    <div class="row">
+      <div class ="col-3 text-dark ms-4 mt-3 mb-3">
+      <label for ="TaskLocation" class = "form-label fw-semibold">Task Location:</label>
+      <input type = "text" class ="form-control text-bg-light"
+      name="TaskLocation" id ="TaskLocation" placeholder="Ontario, Canada...">
+    </div>
+    </div>
+    <div class ="row">
+    <div class ="col md-6 text-dark ms-4">
+      <label for ="TaskDueDate" class = "form-label fw-semibold mt-3">Task Due Date:</label>
+<p class="d-inline-flex gap-1">
+        <button class ="btn btn-outline-primary ms-3" type="button"
+        data-bs-toggle="collapse" data-bs-target="#TaskCalendarCollapse"
+        role="button" aria-expanded="false" aria-controls="TaskCalendarCollapse">
+        Set Due Date...
+      </button>
+</p>
+
+      <div class ="collapse bg-light" style="max-width: 365px;" id="TaskCalendarCollapse">
+        <div class = "card card-body bg-light d-inline-flex">          
+          <div class = "taskcalendarbuttongroup" role="group">
+            <button class="btn btn-light" type="button" id ="prevYear">&lt;&lt;</button>
+              <button class="btn btn-light" type="button" id ="prevMonth">&lt;</button>
+              <input class="btn btn-light  btn-type-input"
+               type="text" autocomplete="off" spellcheck="false"
+                id="currentMonth">
+              <input class="btn btn-light  btn-type-input"
+               type="text" autocomplete="off" spellcheck="false"
+                id="currentYear">
+              <button class="btn btn-light" type="button"  id ="nextMonth">&gt;</button>
+              <button class="btn btn-light" type="button"   id ="nextYear">&gt;&gt;</button>
+                          </div>
+
+
+            <div class = "taskcalendarbuttondaysofweek" role="group"
+            id="taskcalendarbuttondaysofweek">
+
+  <button type="button" disabled class="btn btn-light">Su</button>
+  <button type="button" disabled class="btn btn-light">Mo</button>
+  <button type="button" disabled class="btn btn-light">Tu</button>
+  <button type="button" disabled class="btn btn-light">We</button>
+  <button type="button" disabled class="btn btn-light">Th</button>
+  <button type="button" disabled class="btn btn-light">Fr</button>
+  <button type="button" disabled class="btn btn-light">Sa</button>
+
+          
+          </div>
+
+
+            <div class = "taskcalendargrid" id ="taskcalendargrid"
+            role="group">
+
+            <button type="button" class="btn btn-light">1</button>
+<button type="button" class="btn btn-light">2</button>
+<button type="button" class="btn btn-light">3</button>
+<button type="button" class="btn btn-light">4</button>
+<button type="button" class="btn btn-light">5</button>
+<button type="button" class="btn btn-light">6</button>
+<button type="button" class="btn btn-light">7</button>
+<button type="button" class="btn btn-light">8</button>
+<button type="button" class="btn btn-light">9</button>
+<button type="button" class="btn btn-light">10</button>
+<button type="button" class="btn btn-light">11</button>
+<button type="button" class="btn btn-light">12</button>
+<button type="button" class="btn btn-light">13</button>
+<button type="button" class="btn btn-light">14</button>
+<button type="button" class="btn btn-light">15</button>
+<button type="button" class="btn btn-light">16</button>
+<button type="button" class="btn btn-light">17</button>
+<button type="button" class="btn btn-light">18</button>
+<button type="button" class="btn btn-light">19</button>
+<button type="button" class="btn btn-light">20</button>
+<button type="button" class="btn btn-light">21</button>
+<button type="button" class="btn btn-light">22</button>
+<button type="button" class="btn btn-light">23</button>
+<button type="button" class="btn btn-light">24</button>
+<button type="button" class="btn btn-light">25</button>
+<button type="button" class="btn btn-light">26</button>
+<button type="button" class="btn btn-light">27</button>
+<button type="button" class="btn btn-light">28</button>
+<button type="button" class="btn btn-light">29</button>
+<button type="button" class="btn btn-light">30</button>
+<button type="button" class="btn btn-light">31</button>
+<button type="button" class="btn btn-light">32</button>
+<button type="button" class="btn btn-light">33</button>
+<button type="button" class="btn btn-light">34</button>
+<button type="button" class="btn btn-light">35</button>
+<button type="button" class="btn btn-light">36</button>
+<button type="button" class="btn btn-light">37</button>
+<button type="button" class="btn btn-light">38</button>
+<button type="button" class="btn btn-light">39</button>
+<button type="button" class="btn btn-light">40</button>
+<button type="button" class="btn btn-light">41</button>
+<button type="button" class="btn btn-light">42</button>
+
+          
+          </div>
+                    </div>
+
+
+      <div class ="text-dark">
+      <input type = "text" class ="form-control text-bg-light"
+      name="TaskDueDateEntered" id ="TaskDueDateEntered" placeholder="2026-2-10" readonly>
+    </div>
+
+          </div>
+
+
+
+       
+
+
+        </div>
+      </div>
+
+      <input type ="submit" value="Add Task" class="btn btn-light"/>
+
+      
+    </div>
+    </div>
+  </form>
+
+</div>
+
+
+
+   <script>
+
+            document.addEventListener("DOMContentLoaded",()=>{
+            const cm=document.getElementById("currentMonth");
+            const cy= document.getElementById("currentYear");
+            const pm=document.getElementById("prevMonth");
+            const py= document.getElementById("prevYear");
+            const nm=document.getElementById("nextMonth");
+            const ny= document.getElementById("nextYear");
+            const tcg=document.getElementById("taskcalendargrid");
+            const btns = tcg.querySelectorAll("button");
+            const tdde= document.getElementById("TaskDueDateEntered");
+            let c= new Date();
+            let mode="Days";
+
+
+            const mn = ["January","February","March","April","May","June",
+            "July","August","September","October","November","December"];
+
+            let m = c.getMonth();
+            let y= c.getFullYear();
+
+            let dn=0;
+            let ld=0;
+                        let isClicked=false;
+
+
+            function updateCalendarDate(){
+             const chosen = tcg.querySelector(".selected-day");
+              if(chosen){
+                chosen.classList.remove("btn-secondary","selected-day");
+                chosen.classList.add("btn-light");
+               }
+
+               isClicked=false;
+
+
+              btns.forEach(b=> b.textContent="")
+              ld= new Date(y,m+1,0).getDate();
+              dn= new Date(y,m,1).getDay();
+              let de= new Date(y,m,ld).getDay();
+              let mld= new Date(y,m,0).getDate();
+
+              for(let theday=1; theday<=ld; theday++){
+
+                btns[dn+(theday-1)].textContent=theday;
+              }
+
+              for(let i =0; i<dn; i++){
+                btns[i].textContent=mld-(dn-1-i);
+              }
+
+              let thenextday=1;
+              for(let i=dn+ld; i<btns.length; i++){
+                btns[i].textContent=thenextday++;
+              }
+
+              
+            }
+
+            btns.forEach((btn,i)=>{
+
+              btn.addEventListener("click",()=>{
+
+               const chosen = tcg.querySelector(".selected-day");
+
+               if(chosen===btn){
+                btn.classList.remove("btn-secondary","selected-day")
+                btn.classList.add("btn-light");
+                isClicked=false;
+                return;
+               }
+
+               if(chosen){
+                chosen.classList.remove("btn-secondary","selected-day");
+                chosen.classList.add("btn-light");
+               }
+
+               btn.classList.add("btn-secondary","selected-day");
+               btn.classList.remove("btn-light");
+               isClicked=true;
+
+
+                const theactualday = Number(btn.textContent);
+
+                const x=new Date(y,m,1);
+                if (i<dn){
+                  x.setMonth(x.getMonth()-1);
+                }
+
+                if (i>=dn+ld){
+                  x.setMonth(x.getMonth()+1);
+                }
+                const yrClick=x.getFullYear();
+                const mnClick=x.getMonth();
+
+                const information=`${yrClick}-${mnClick+1}-${theactualday}`;
+                tdde.value=information;
+
+
+
+              });
+              
+            });
+
+            function inputParserMonth(s){
+
+              s= s.trim();
+              if (!s) return null;
+
+              if(/^\d+$/.test(s)){
+                const n = Number(s);
+                if(n>=1&&n<=12) return n-1;
+                return null;
+
+
+              }
+
+              const sl = s.toLowerCase().slice(0,3);
+              const monthMap={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+              return (sl in monthMap) ? monthMap[sl]:null;
+            }
+
+            function renderTypedMonthYear(){
+              const mt=inputParserMonth(cm.value);
+              const my= parseInt(cy.value,10);
+
+              const newMonth=(mt!==null)? mt: m;
+              const newYear= Number.isFinite(my)? my: y;
+
+              m=newMonth;
+              y=newYear;
+              c.setFullYear(y);
+              c.setMonth(m);
+
+              displayMonth();
+              updateCalendarDate();
+            }
+
+
+
+
+            function displayMonth(){
+              cm.value= mn[m];
+              cy.value= y;
+            }
+
+
+            nm.addEventListener("click",()=>{
+              c.setMonth(c.getMonth()+1);
+              m=c.getMonth();
+              y=c.getFullYear();
+              displayMonth();
+              updateCalendarDate();
+
+            }          
+          );
+
+          
+            pm.addEventListener("click",()=>{
+              c.setMonth(c.getMonth()-1);
+             m=c.getMonth();
+              y=c.getFullYear();
+              displayMonth();
+              updateCalendarDate();
+
+            }          
+          );
+
+
+          
+            ny.addEventListener("click",()=>{
+              c.setFullYear(c.getFullYear()+1);
+             m=c.getMonth();
+              y=c.getFullYear();
+              displayMonth();
+              updateCalendarDate();
+
+            }          
+          );
+
+          
+            py.addEventListener("click",()=>{
+              c.setFullYear(c.getFullYear()-1);
+             m=c.getMonth();
+              y=c.getFullYear();
+              displayMonth();
+              updateCalendarDate();
+
+            }          
+          );
+
+              displayMonth();
+              updateCalendarDate();
+
+            // Source - https://stackoverflow.com/a/4881951
+// Posted by Matti Virkkunen
+// Retrieved 2026-02-01, License - CC BY-SA 2.5
+
+function getNumberOfDays(cy, cm) {
+    var isLeap = ((cy % 4) == 0 && ((cy % 100) != 0 || (cy % 400) == 0));
+    return [31, (isLeap ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][cm];
+}
+
+
+cm.addEventListener("change",renderTypedMonthYear);
+cy.addEventListener("change",renderTypedMonthYear);
+
+[cm,cy].forEach(element => {
+
+  element.addEventListener("keydown",(event)=>{
+    if(event.key==="ENTER"){
+      event.preventDefault();
+      renderTypedMonthYear();
+      element.blur();
+
+    }
+  });
+  
+});
+
+
+            });
+
+
+          </script>
+{% endblock %}

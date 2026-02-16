@@ -1,0 +1,260 @@
+
+{% extends 'base.html' %}
+
+    {% block head %} {% endblock %}
+    {% block title %}DarjahAI ~ About{% endblock %}
+
+{% block html_class %}home-page{% endblock %}
+{% block body_class %}home-page{% endblock %}
+{% block body %}
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<nav class="navbar" style="background-color:#e3f2fd;" data-bs-theme="light">
+  <div class="container-fluid">
+    
+    <a class="navbar-brand" href="/home">DarjahAI</a>
+
+    <div class ="robotbi-initial-section">
+
+    <a href = "/home">
+    <svg xmlns="http://www.w3.org/2000/svg"
+     fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
+  <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
+  <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+</svg>
+</a>
+</div>
+
+    <button class="navbar-toggler" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navbarDarjahAI"
+      aria-controls="navbarDarjahAI" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarDarjahAI">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/home">Home</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            My Account
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/login">Login</a></li>
+            <li><a class="dropdown-item" href="/register">Register</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/">Go Back</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+<div class="bg-dark bg-gradient" style="min-height: 100vh; padding-top: 1.5rem;">
+
+    <div class ="carousel slide mx-auto text-center"
+    id ="featuresDashboard-About"
+    data-bs-ride="carousel"
+    style="max-width:500px; max-height: 500px;">
+
+        <div class = "carousel-indicators">
+            <button type = "button"
+            data-bs-target="#featuresDashboard-About"
+            data-bs-slide-to="0"
+            class="active"
+            aria-current="true"
+            aria-label="Task Management System"
+            >
+            </button>
+            <button type = "button"
+            data-bs-target="#featuresDashboard-About"
+            data-bs-slide-to="1"
+            aria-current="true"
+            aria-label="Feature 2"
+            >
+            </button>
+            <button type = "button"
+            data-bs-target="#featuresDashboard-About"
+            data-bs-slide-to="2"
+            aria-current="true"
+            aria-label="Feature 3"
+            >
+            </button>
+        </div>
+
+        <div class = "carousel-inner">
+            <div class = "carousel-item active">
+                <img src="{{url_for('static',filename='images/pexels-tara-winstead-8850706.jpg')}}" class="d-block w-100" alt="" style="max-width: 500px; max-height: 500px;">
+                <div class="carousel-caption d-none d-md-block text-dark fw-bold">
+                    <h5>Task Management System</h5>
+                    <p>CRUD Functionality</p>
+                </div>
+            </div>
+            <div class = "carousel-item">
+                <img src="{{url_for('static',filename='images/pexels-cottonbro-3945655.jpg')}}" class="d-block w-100" alt="" style="max-width: 500px; max-height: 500px;">
+                <div class="carousel-caption d-none d-md-block text-dark fw-bold">
+                    <h5>Complex Leveling System</h5>
+                    <p>Level up and Rise</p>
+                </div>
+            </div>
+            <div class = "carousel-item">
+                <img src="{{url_for('static',filename='images/pexels-tara-winstead-8386421.jpg')}}" class="d-block w-100" alt="" style="max-width: 500px; max-height: 332px;">
+                <div class="carousel-caption d-none d-md-block text-dark fw-bold">
+                    <h5>AI Functionality</h5>
+                    <p>Let AI assist with tasks</p>
+                </div>
+            </div>
+        </div>
+
+        <button class="carousel-control-prev"
+        type = "button"
+        data-bs-target="#featuresDashboard-About"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"
+        aria-hidden="true"></span>
+        <span class="visually-hidden"></span>
+        </button>
+
+        <button class="carousel-control-next"
+        type = "button"
+        data-bs-target="#featuresDashboard-About"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon"
+        aria-hidden="true"></span>
+        <span class="visually-hidden"></span>
+        </button>
+
+    </div>
+    
+    <div class ="card mt-4 mx-auto"  style="max-width: 500px;">
+
+        <div class ='card-header'>
+            Quote
+        </div>
+        <div class ="card-body">
+
+            <figure>
+                <blockquote class ="blockquote">
+                    Software is eating the world, but AI is going to eat software.
+                </blockquote>
+                <figcaption class ="blockquote-footer">
+
+                    Jensen Huang - CEO of NVIDIA
+                    <a href="https://www.brainyquote.com/quotes/jensen_huang_1101063"
+                    style="text-decoration: none;">
+                    <cite title="brainy-quote">~ (Brainy Quote)</cite></a>
+                </figcaption>
+            </figure>
+        </div>
+
+    </div>
+
+      <div class  ="accordion mx-auto p-5 shadow-sm" id = "accordianFeatures" style="max-width: 500px;">
+
+        <div class = "accordion-item">
+
+        <h2 class = "accordion-header">
+
+          <button class = "accordion-button"
+          type= "button" data-bs-toggle="collapse"
+          data-bs-target="#featuresCollapse"
+          aria-expanded="false"
+          aria-controls="featuresCollapse">
+
+          <span class="d-block w-100 text-center">
+          Create Tasks
+          </span>
+
+          </button>
+        </h2>
+
+        <div id="featuresCollapse" class="accordion-collapse collapse show" data-bs-parent="accordianFeatures">
+          <div class="accordion-body">
+            <p class = "fw-semibold">Create as many tasks as you'd like in a easy to use interface.</p>
+            Customize them, change colors and adjust size.
+          </div>
+        </div>
+
+        </div>
+
+        <div class="accordion-item">
+          <h2 class = "accordion-header">
+            <button class = "accordion-button collapsed"
+          type= "button" data-bs-toggle="collapse"
+          data-bs-target="#featuresCollapse2"
+          aria-expanded="false"
+          aria-controls="featuresCollapse2">
+
+          <span class="d-block w-100 text-center">
+          Manage Tasks
+          </span>
+
+          </button>
+
+          </h2>
+
+          <div id= "featuresCollapse2" class="accordion-collapse collapse" data-bs-parent="accordianFeatures">
+
+            <div class="accordion-body">
+              <p class = "fw-semibold">Delete and update Tasks.</p>
+              See a log of which ones are deleted.
+            </div>
+          </div>
+
+        </div>
+
+
+        
+        <div class="accordion-item">
+          <h2 class = "accordion-header">
+            <button class = "accordion-button collapsed"
+          type= "button" data-bs-toggle="collapse"
+          data-bs-target="#featuresCollapse3"
+          aria-expanded="false"
+          aria-controls="featuresCollapse3">
+
+          <span class="d-block w-100 text-center">
+          Chat
+          </span>
+
+          </button>
+
+          </h2>
+
+          <div id= "featuresCollapse3" class="accordion-collapse collapse" data-bs-parent="accordianFeatures">
+
+            <div class="accordion-body">
+              <p class = "fw-semibold">Chat with your very own assistant: DarjahAI</p>
+            DarjahAI can help you create and manage your tasks.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+</div>
+
+{% endblock %}
