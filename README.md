@@ -1,7 +1,9 @@
 ```md
 # DarjahAI — Gamified Task Manager + Analytics + AI Assistant (Flask)
 
-DarjahAI is a Flask web app that combines **task + subtask management**, **productivity analytics**, and an integrated **LLM assistant**, wrapped in a **gamified leveling system** (XP, levels, streaks, classes).
+DarjahAI is a Flask web app that combines **task + subtask management**,
+ **productivity analytics**, and an integrated **LLM assistant**,
+wrapped in a **gamified leveling system** (XP, levels, streaks, classes).
 
 This is an actively evolving personal system project built by me.
 
