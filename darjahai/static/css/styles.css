@@ -333,20 +333,17 @@ html.home-page::-webkit-scrollbar-thumb, body.home-page::-webkit-scrollbar-thumb
 }
 
 .taskcalendargrid{
-  display: grid;
-  justify-content: start;
+  display: grid !important;                
+  grid-template-columns: repeat(7, 2.5rem) !important;
   gap: .25rem;
-  flex-wrap: nowrap;
-  width: max-content;
-  align-items: center;
-  grid-template-columns: 2ch 2ch 2ch 2ch 2ch 2ch 2ch;
+  width: fit-content;                    
 }
 
-.taskcalendargrid{
-    width: 100%;
-    padding:.25rem 0;
-    white-space:nowrap;
+.taskcalendargrid > button{
+  width: 2.5rem;
+  padding: .375rem 0;                    
 }
+
 
 #currentMonth{
     min-width: 10ch;
