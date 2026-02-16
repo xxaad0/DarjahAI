@@ -407,6 +407,8 @@ svg{
   }
 }
 
+
+
 @media (max-width: 360px){
   .pre-confirmation-btn,
   .start-confirmation-btn{
@@ -418,4 +420,26 @@ svg{
   svg{
     width: min(50vw, 900px);
   }
+}
+
+/*7 day layout should work*/
+.taskcalendarbuttondaysofweek,
+.taskcalendargrid{
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: .25rem;
+  width: 100%;
+}
+
+.taskcalendarbuttondaysofweek .btn,
+.taskcalendargrid .btn{
+  width: 100%;
+  padding: .35rem 0;         
+}
+
+.taskcalendargrid .btn{
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
