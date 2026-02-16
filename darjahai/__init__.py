@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, flash
+from flask import Flask, redirect, url_for, flash,jsonify,request
 from dotenv import load_dotenv
 from flask_migrate import Migrate
 
@@ -40,6 +40,9 @@ def create_app():
 
     @login_manager.unauthorized_handler
     def unauthorized():
+        if request.path == "/chat/api":
+            return jsonify({"error": "Unauthorized"}), 401
+        
         flash("Please register/login first.", "warning")
         return redirect(url_for("main.home"))
 

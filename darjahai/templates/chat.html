@@ -291,12 +291,26 @@ document.addEventListener("DOMContentLoaded", function(){
 
           method:"POST",
           headers:{"Content-Type":"application/json"},
+          credentials: "same-origin",
           body: JSON.stringify({message:postText,session_id: curSes}),
 
         });
 
-        const d= await r.json().catch(() => ({}));
-        if (!r.ok) throw new Error(d.error || "Request Failed");
+const raw = await r.text();
+const ct = r.headers.get("content-type") || "";
+
+if (!r.ok) {
+  // try JSON error, otherwise show raw snippet
+  let msg = "Request failed";
+  try { msg = JSON.parse(raw).error || msg; } catch {}
+  throw new Error(msg + (raw ? " | " + raw.slice(0, 120) : ""));
+}
+
+if (!ct.includes("application/json")) {
+  throw new Error("Non-JSON response: " + raw.slice(0, 160));
+}
+
+const d = JSON.parse(raw);
 
         appendText(d.reply || "(empty reply)","ai");
 
