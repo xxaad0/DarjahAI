@@ -1,13 +1,13 @@
-```md
+````md
 # DarjahAI — Gamified Task Manager + Analytics + AI Assistant (Flask)
 
-DarjahAI is a Flask web app that combines **task + subtask management**,
- **productivity analytics**, and an integrated **LLM assistant**,
-wrapped in a **gamified leveling system** (XP, levels, streaks, classes).
+DarjahAI is a Flask web app that combines **task + subtask management**, **productivity analytics**, and an integrated **LLM assistant**, wrapped in a **gamified leveling system** (XP, levels, streaks, classes).
 
 This is an actively evolving personal system project built by me.
 
 It started with sagyoai and now has developed into phase 2.
+
+Made in Bootstrap HTML 5.3
 
 ---
 
@@ -52,6 +52,7 @@ It started with sagyoai and now has developed into phase 2.
 ## Tech stack
 
 - **Backend:** Python, Flask, Jinja2
+- **Frontend:** Bootstrap HTML 5.3
 - **Auth & security:** Flask-Login, Flask-Bcrypt
 - **Database:** Flask-SQLAlchemy + Flask-Migrate (Postgres via Docker Compose; SQLite fallback supported)
 - **Mail:** flask-mailman (SMTP)
@@ -62,10 +63,9 @@ It started with sagyoai and now has developed into phase 2.
 
 ---
 
-## Repository layout 
+## Repository layout
 
-```
-
+```text
 DarjahAI/
 ├─ run.py
 ├─ requirements.txt
@@ -73,32 +73,32 @@ DarjahAI/
 ├─ docker-compose.yml
 ├─ migrations/
 └─ darjahai/
-├─ **init**.py            # app factory + request hooks (streak tracking)
-├─ config.py              # env-driven configuration
-├─ extensions.py          # db/bcrypt/login/mail singletons
-├─ models.py              # SQLAlchemy models (User, Character, Tasks, etc.)
-├─ analysis.py            # task analysis pipeline (terms/scores/history)
-├─ levelup.py             # XP + level logic
-├─ chat.py                # AI assistant + quota logic
-├─ auth/
-│  └─ routes.py           # auth routes + account settings
-└─ main/
-└─ routes.py           # dashboard/tasks/subtasks/stats/chat/billing routes
-
-```
+   ├─ __init__.py            # app factory + request hooks (streak tracking)
+   ├─ config.py              # env-driven configuration
+   ├─ extensions.py          # db/bcrypt/login/mail singletons
+   ├─ models.py              # SQLAlchemy models (User, Character, Tasks, etc.)
+   ├─ analysis.py            # task analysis pipeline (terms/scores/history)
+   ├─ levelup.py             # XP + level logic
+   ├─ chat.py                # AI assistant + quota logic
+   ├─ auth/
+   │  └─ routes.py           # auth routes + account settings
+   └─ main/
+      └─ routes.py           # dashboard/tasks/subtasks/stats/chat/billing routes
+````
 
 ---
 
-## Configuration (environment variables)
+## Configuration
 
-DarjahAI is configured via environment variables:
+DarjahAI is configured via environment variables.
 
 ---
 
 ## Author
 
-**Saad Shahid**  
+**Saad Shahid**
+
 * Email: `dev@saadshahid.net`
 * GitHub: `xxaad0`
 * LinkedIn: `saad-shahid-560622217`
-```
+
